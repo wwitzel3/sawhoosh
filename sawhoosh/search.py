@@ -30,10 +30,8 @@ def results_to_instances(request, results):
     instances = []
     for r in results:
         cls = pickle.loads('{0}'.format(r.get('cls')))
-        instance = request.db.query(cls).get(r.get('id'))
-        container = container_factory(cls, request)
-        instance.__parent__ = container
-        instance.__name__ = id
+        id = r.get('id')
+        instance = request.db.query(cls).get(id)
         instances.append(instance)
     return instances
 

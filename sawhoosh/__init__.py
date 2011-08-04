@@ -4,7 +4,6 @@ from sqlalchemy import engine_from_config
 
 from sawhoosh.model import initialize_sql
 
-from sawhoosh.resources import root_factory
 from sawhoosh.security import RequestWithDBAttribute
 
 def main(global_config, **settings):
@@ -14,7 +13,6 @@ def main(global_config, **settings):
     
     config = Configurator(
         settings=settings,
-        root_factory=root_factory,
         request_factory=RequestWithDBAttribute,
     )
 
@@ -22,6 +20,12 @@ def main(global_config, **settings):
         
     config.scan('sawhoosh.model')    
     initialize_sql(engine)
+    
+    config.add_route('index', '/')
+    config.add_route('search', '/search')
+    
+    config.add_route('author', '/author/{id}')
+    config.add_route('document', '/document/{id}')
     
     config.add_static_view('static', 'sawhoosh:static')
     config.scan('sawhoosh.views')

@@ -13,11 +13,13 @@ from sawhoosh.search import SawhooshSchema
 from sawhoosh.search import INDEX_NAME
 from sawhoosh.search import results_to_instances
 
-@view_config(renderer='index.mako')
+import sawhoosh.model as M
+
+@view_config(route_name='index', renderer='index.mako')
 def index(request):
     return dict()
     
-@view_config(name='search', renderer='json', xhr=True)
+@view_config(route_name='search', renderer='json', xhr=True)
 def search_ajax(request):
     query = request.params.get('keywords')
     parser = QueryParser('value', request.ix.schema)
@@ -29,6 +31,20 @@ def search_ajax(request):
                               request=request)
     return dict(search_results_html=search_results_html)
     
-@view_config(name='search', renderer='search.mako')
+@view_config(route_name='search', renderer='search.mako')
 def search_mako(request):
     return dict()
+    
+@view_config(route_name='author', renderer='author.mako')
+def author_view(request):
+    author = request.db.query(M.Author).get(request.matchdict.get('id'))
+    if not author:
+        raise HTTPNotFound
+    return dict(author=author)
+
+@view_config(route_name='document', renderer='document.mako')
+def document_view(request):
+    document = request.db.query(M.Document).get(request.matchdict.get('id'))
+    if not document:
+        raise HTTPNotFound
+    return dict(document=document)

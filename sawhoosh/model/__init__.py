@@ -35,6 +35,9 @@ class SawhooshBase(object):
         writer.delete_by_term('id', self.id)
         writer.commit()
         
+    def uri(self):
+        return u'{0}/{1}'.format(self.__tablename__, self.id)
+        
 Base = declarative_base(cls=SawhooshBase)
 
 def reindex(session, flush_context):
