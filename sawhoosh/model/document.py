@@ -19,3 +19,6 @@ class Document(Base):
     content = Column(Text, nullable=False)
     
     author_id = Column(Integer, ForeignKey('authors.id'), index=True)
+
+    def __str__(self):
+        return u'Document - Title: {0}'.format(self.title)

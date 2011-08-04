@@ -26,13 +26,13 @@ if not os.path.exists(INDEX_NAME):
 else:
     WIX = open_dir(INDEX_NAME)
         
-def results_to_instances(session, results):
+def results_to_instances(request, results):
     instances = []
     for r in results:
         cls = pickle.loads('{0}'.format(r.get('cls')))
         id = r.get('id')
-        instance = session.query(cls).get(id)
-        container = container_factory(cls)
+        instance = request.db.query(cls).get(id)
+        container = container_factory(cls, request)
         instance.__parent__ = container
         instance.__name__ = id
         instances.append(instance)

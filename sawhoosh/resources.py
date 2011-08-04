@@ -41,13 +41,13 @@ class DocumentContainer(ModelContainer):
 def root_factory(request):
     return Root(request)
 
-def container_factory(cls):
+def container_factory(cls, request):
     if cls == Author:
-        return AuthorContainer(cls, root_factory)
+        c = AuthorContainer(cls)
     elif cls == Document:
-        return DocumentContainer(cls, root_factory)
-    else:
-        return None
+        c = DocumentContainer(cls)
+    c.__parent__ = root_factory(request)
+    return c
         
 from sawhoosh.model import DBSession
 

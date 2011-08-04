@@ -25,7 +25,7 @@ def search_ajax(request):
         query = parser.parse(query)
         results = searcher.search(query)
         search_results_html=render('sawhoosh:templates/search_results.mako',
-                              dict(results=results_to_instances(request.db, results)),
+                              dict(results=results_to_instances(request, results)),
                               request=request)
     return dict(search_results_html=search_results_html)
     
