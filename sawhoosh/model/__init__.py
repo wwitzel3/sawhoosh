@@ -21,12 +21,13 @@ class SawhooshBase(object):
     
     def index(self):
         writer = WIX.writer()
+        
+        id = u'{0}'.format(self.id)
         writer.delete_by_term('id', self.id)
-    
+        
         cls = u'{0}'.format(pickle.dumps(self.__class__))
         value = u' '.join([getattr(self, attr) for attr in self.__whoosh_value__.split(',')])
-        
-        writer.add_document(id=self.id, cls=cls, value=value)
+        writer.add_document(id=id, cls=cls, value=value)
         writer.commit()
 
     def deindex(self):
@@ -47,6 +48,10 @@ event.listen(DBSession, 'after_flush', reindex)
 
 def populate():
     session = DBSession()
+    import time
+    a = Author(name=u'Wayne {0}'.format(time.time()))
+    a.documents.append(Document(title='Test', content='SQLalchemy Pyramid Traversal Whoosh'))
+    session.add(a)
     session.flush()
     transaction.commit()
 
@@ -54,12 +59,12 @@ def initialize_sql(engine):
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
     Base.metadata.create_all(engine)
-    try:
-        populate()
-    except IntegrityError:
-        transaction.abort()
+    populate()
+    transaction.abort()
     return DBSession
     
 from sawhoosh.search import WIX
+from sawhoosh.model.author import Author
+from sawhoosh.model.document import Document
 
 __all__ = ['DBSession', 'Base', 'initialize_sql']
