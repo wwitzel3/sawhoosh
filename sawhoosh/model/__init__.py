@@ -13,8 +13,6 @@ from sqlalchemy import event
 
 from zope.sqlalchemy import ZopeTransactionExtension
 
-from sawhoosh.search import WIX
-
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))        
 
 class SawhooshBase(object):
@@ -62,4 +60,6 @@ def initialize_sql(engine):
         transaction.abort()
     return DBSession
     
+from sawhoosh.search import WIX
+
 __all__ = ['DBSession', 'Base', 'initialize_sql']

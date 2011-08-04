@@ -12,6 +12,8 @@ except ImportError, e:
 from whoosh.index import create_in
 from whoosh.index import open_dir
 
+from sawhoosh.resources import container_factory
+
 class SawhooshSchema(SchemaClass):
     value = TEXT
     id = ID(stored=True, unique=True)
@@ -29,7 +31,11 @@ def results_to_instances(session, results):
     for r in results:
         cls = pickle.loads('{0}'.format(r.get('cls')))
         id = r.get('id')
-        instances.append(session.query(cls).get(id))
+        instance = session.query(cls).get(id)
+        container = container_factory(cls)
+        instance.__parent__ = container
+        instance.__name__ = id
+        instances.append(instance)
     return instances
 
 __all__ = ['SawhooshSchema', 'WIX', 'INDEX_NAME', 'results_to_instances']

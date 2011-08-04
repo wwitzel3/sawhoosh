@@ -1,6 +1,5 @@
 from sqlalchemy.orm.exc import NoResultFound
 
-from sawhoosh.model import DBSession
 from sawhoosh.model.document import Document
 from sawhoosh.model.author import Author
 
@@ -33,8 +32,23 @@ class ModelContainer(object):
     def __iter__(self):
         return self.db.query(self.cls)
             
-class AuthorContainer(ModelContainer): pass
-class DocumentContainer(ModelContainer): pass
-
+class AuthorContainer(ModelContainer):
+    __name__ = 'author'
+    
+class DocumentContainer(ModelContainer):
+    __name__ = 'document'
+    
 def root_factory(request):
     return Root(request)
+
+def container_factory(cls):
+    if cls == Author:
+        return AuthorContainer(cls, root_factory)
+    elif cls == Document:
+        return DocumentContainer(cls, root_factory)
+    else:
+        return None
+        
+from sawhoosh.model import DBSession
+
+__all__ = ['root_factory', 'container_factory']
