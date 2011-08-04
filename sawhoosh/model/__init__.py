@@ -49,8 +49,9 @@ event.listen(DBSession, 'after_flush', reindex)
 def populate():
     session = DBSession()
     import time
-    a = Author(name=u'Wayne {0}'.format(time.time()))
-    a.documents.append(Document(title='Test', content='SQLalchemy Pyramid Traversal Whoosh'))
+    timestr = u'BLAH {0}'.format(time.time())
+    a = Author(name=timestr)
+    a.documents.append(Document(title=timestr, content='SQLalchemy Pyramid Traversal Whoosh'))
     session.add(a)
     session.flush()
     transaction.commit()
