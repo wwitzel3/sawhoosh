@@ -45,15 +45,11 @@ Base = declarative_base(cls=SawhooshBase)
 
 def update_indexes(session, flush_context):
     writer = WIX.writer()
-    print "WOOOOOO"
     for i in session.new:
-        print i, "NEW"
         i.index(writer)
     for i in session.dirty:
-        print i, "DIRTY"
         i.reindex(writer)
     for i in session.deleted:
-        print i, "DELETED"
         i.deindex(writer)        
     writer.commit()
     
