@@ -42,9 +42,15 @@
             <li>
               <a href="/">Home</a>
             </li>
-            <li>
-              <a href="/search">Search Demo</a>
-            </li>
+            <li><a href="${request.route_url('search')}">Search</a></li>
+            <li><a href="${request.route_url('author')}">Authors</a></li>
+            <ul>
+                <li><a href="${request.route_url('author_new')}">New</a></li>
+            </ul>
+            <li><a href="${request.route_url('document')}">Documents</a></li>
+            <ul>
+                <li><a href="${request.route_url('document_new')}">New</a></li>
+            </ul>
             </ul>
         </div>
       </div>
