@@ -21,19 +21,19 @@ class SawhooshBase(object):
     __whoosh_value__ = 'attribue,attribute,...'
     
     def index(self, writer):
-        id = u'{0}'.format(self.id)
+        oid = u'{0}'.format(self.id)
         cls = u'{0}'.format(pickle.dumps(self.__class__))
         value = u' '.join([getattr(self, attr) for attr in self.__whoosh_value__.split(',')])
-        writer.add_document(id=id, cls=cls, value=value)
+        writer.add_document(id=oid, cls=cls, value=value)
 
     def reindex(self, writer):
-        id = u'{0}'.format(self.id)
-        writer.delete_by_term('id', self.id)
+        oid = u'{0}'.format(self.id)
+        writer.delete_by_term('id', oid)
         self.index(writer)
         
     def deindex(self, writer):
-        id = u'{0}'.format(self.id)
-        writer.delete_by_term('id', self.id)
+        oid = u'{0}'.format(self.id)
+        writer.delete_by_term('id', oid)
         
     def route_name(self):
         """Override this in the model itself if your route name(s)

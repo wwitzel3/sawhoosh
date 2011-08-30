@@ -1,7 +1,7 @@
 import uuid
 
 from sqlalchemy import Integer
-from sqlalchemy import CHAR
+from sqlalchemy import Unicode
 from sqlalchemy import String
 from sqlalchemy import ForeignKey
 from sqlalchemy import Column
@@ -15,7 +15,7 @@ class Author(Base):
     __tablename__ = 'author'
     __whoosh_value__ = 'id,name'
     
-    id = Column(CHAR(32), primary_key=True, default=new_uuid)
+    id = Column(Unicode(32), primary_key=True, default=new_uuid)
     name = Column(String, nullable=False)
     
     documents = relation(Document, backref='author', cascade='all')
