@@ -12,8 +12,6 @@ except ImportError, e:
 from whoosh.index import create_in
 from whoosh.index import open_dir
 
-from sawhoosh.resources import container_factory
-
 class SawhooshSchema(SchemaClass):
     value = TEXT
     id = ID(stored=True, unique=True)
